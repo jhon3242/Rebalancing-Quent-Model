@@ -9,9 +9,9 @@ import java.util.Map;
 
 public class StockRepository {
 	private static final StockRepository instance = new StockRepository();
-	Map<LocalDate, DateInfo> repository = new HashMap<>();
+	Map<LocalDate, DateInfo> repository = new HashMap<LocalDate, DateInfo>();
 
-	private StockRepository() {};
+	private StockRepository() {}
 
 	public static StockRepository getInstance() {
 		return instance;
