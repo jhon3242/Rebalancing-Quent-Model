@@ -10,17 +10,12 @@ import java.util.List;
 public class MainController {
 	private static final StockRepository stockRepository = StockRepository.getInstance();
 	private static final ParsingController parsingController = new ParsingController();
+	private static final RebalancingController rebalancingController = new RebalancingController();
 
 	public void run() {
-		parsingController.parsing(readFile());
+		parsingController.parsing(Constant.APPL_PATH);
+		rebalancingController.run();
 	}
 
-	private List<String> readFile() {
-		try {
-			return ReadFileView.readFile(Constant.APPL_PATH);
-		} catch (Exception e) {
-			OutputView.printError(e);
-			return null;
-		}
-	}
+
 }

@@ -3,13 +3,16 @@ package com.example.rebalancing.controller;
 import com.example.rebalancing.Util;
 import com.example.rebalancing.domain.DateInfo;
 import com.example.rebalancing.repository.StockRepository;
+import com.example.rebalancing.view.OutputView;
+import com.example.rebalancing.view.ReadFileView;
 
 import java.util.List;
 
 public class ParsingController {
 	private static final StockRepository stockRepository = StockRepository.getInstance();
 
-	public void parsing(List<String> readFile) {
+	public void parsing(String path) {
+		List<String> readFile = readFile(path);
 		readFile.remove(0);
 		readFile.stream()
 				.map(ParsingController::getDateInfo)
@@ -20,5 +23,14 @@ public class ParsingController {
 //		System.out.println("Parsing.getDateInfo");
 		List<String> split = Util.removeColon(line.split(","));
 		return new DateInfo(split);
+	}
+
+	private List<String> readFile(String path) {
+		try {
+			return ReadFileView.readFile(path);
+		} catch (Exception e) {
+			OutputView.printError(e);
+			return null;
+		}
 	}
 }
