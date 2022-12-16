@@ -15,5 +15,6 @@ public class Constant {
 	public static final int CHANGE_IDX = 6;
 
 	public static final String ERROR_PREFIX = "[ERROR] : ";
+	public static final String INPUT_START_DATE_MSG = "시작날을 입력해주세요.";
 //	public static final LocalDate START_DATE = LocalDate.of(2014, 1, 15);
 }
