@@ -22,7 +22,7 @@ public class OutputView {
 		System.out.println(Constant.TOTAL_PROFIT_MSG + change * 100 + "%");
 	}
 
-	private static void printUserInfo(UserDto userDto) {
+	public static void printUserInfo(UserDto userDto) {
 		System.out.println(Constant.EVALUATION_ASSET_MSG + userDto.getTotalValue());
 		System.out.println(Constant.STOCK_AMOUNT_MSG + userDto.getAmount());
 		System.out.println(Constant.CASH_ASSET_MSG + userDto.getCash());

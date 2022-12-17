@@ -5,6 +5,7 @@ import com.example.rebalancing.Util;
 import com.example.rebalancing.contanct.Constant;
 import com.example.rebalancing.domain.User;
 import com.example.rebalancing.repository.StockRepository;
+import com.example.rebalancing.view.OutputView;
 
 import java.time.LocalDate;
 
@@ -30,19 +31,25 @@ public class RebalancingService {
 		Float buyPrice = STANDARD_PRICE;
 		while (!nowDate.isEqual(endDate)) {
 			Float nowPrice = repository.getPrice(nowDate);
-			Float nowChange = Util.getChange(STANDARD_PRICE, nowPrice);
-			Float minChange = Util.getChange(STANDARD_PRICE, minPrice);
-			Float buyChange = Util.getChange(STANDARD_PRICE, buyPrice);
 			minPrice = Math.min(minPrice, nowPrice);
-			if (isBuyTime(minChange, nowChange)) {
+			Float nowChange = Util.getChange(STANDARD_PRICE, nowPrice); // 표준가로 부터 현재 가격의 변동%
+			Float minChange = Util.getChange(STANDARD_PRICE, minPrice); // 표준가로 부터 최소 가격의 변동%
+			Float buyChange = Util.getChange(STANDARD_PRICE, buyPrice); // 표준가로 부터 구매 가격의 변동%
+			if (isBuyTime(minChange, nowChange) && user.canBuy(nowPrice)) {
+//				System.out.println("매수 : " + nowPrice); // TODO 지울것
 				buyStock(nowPrice, user.getMaximumAmount(nowPrice)); // buy
 				minPrice = nowPrice;
 				buyPrice = nowPrice;
-			} else if (isSellTime(buyChange, nowChange)) {
-				sellStock(nowPrice, user.getAmountByChange((float) (Math.round((buyChange - nowChange) * 100) / 100.0))); // sell
+			} else if (isSellTime(buyChange, nowChange, minChange) && user.canSell()) {
+//				System.out.println("매도 : " + nowPrice); // TODO 지울것
+				Float div = (float) (Math.round((buyChange - nowChange) * 100) / 100.0);
+//				System.out.println("div = " + div);
+				sellStock(nowPrice, user.getAmountByChange(Util.getRound(buyChange - nowChange))); // sell
 			}
 			nowDate = repository.getNextDate(nowDate, endDate);
 			user.updateEvaluationAmount(nowPrice);
+//			OutputView.printUserInfo(new UserDto(user));
+//			System.out.println();
 		}
 	}
 
@@ -61,9 +68,9 @@ public class RebalancingService {
 	/**
 	 * 매도 해야하는 시점
 	 */
-	private boolean isSellTime(Float buyChange, Float nowChange) {
+	private boolean isSellTime(Float buyChange, Float nowChange, Float minChange) {
 		Float div = (float) (Math.round((buyChange - nowChange) * 100) / 100.0);
-		return Float.compare(div, SELL_CHANGE_RATIO) >= 0;
+		return Float.compare(div, SELL_CHANGE_RATIO) >= 0 && minChange >= nowChange;
 	}
 
 	public void sellStock(Float price, int amount) {

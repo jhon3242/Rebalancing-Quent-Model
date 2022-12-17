@@ -26,9 +26,7 @@ public class User {
 		this.sellList = Arrays.asList(sellAmount, sellAmount, sellAmount, sellAmount, sellAmount, sellAmount, sellAmount, sellAmount, sellAmount, sellAmount);
 	}
 
-	public Float getMeanPrice() {
-		return Util.getFloorPrice(purchaseAmount / amount);
-	}
+
 
 	/**
 	 * 전량 매수
@@ -76,7 +74,7 @@ public class User {
 	}
 
 	private int getSellIdxByChange(Float change) {
-		if (change > -Constant.SELL_CHANGE_RATIO) {
+		if (Math.abs(change) < Constant.SELL_CHANGE_RATIO) {
 			return -1;
 		}
 		return (int)(Math.abs(change) / Constant.SELL_CHANGE_RATIO) - 1;
@@ -84,6 +82,14 @@ public class User {
 
 	public void updateEvaluationAmount(Float price) {
 		this.evaluationAmount = price * amount;
+	}
+
+	public boolean canBuy(Float price) {
+		return cash >= price;
+	}
+
+	public boolean canSell() {
+		return amount > 0;
 	}
 
 	@Override

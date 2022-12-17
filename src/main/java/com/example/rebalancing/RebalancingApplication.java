@@ -13,9 +13,6 @@ public class RebalancingApplication {
 	public static void main(String[] args) {
 		MainController mainController = new MainController();
 		mainController.run();
-
-//		MainController mainController = new MainController();
-//		mainController.run();
 	}
 
 }

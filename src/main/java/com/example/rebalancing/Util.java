@@ -44,7 +44,7 @@ public class Util {
 		return (float)Math.round(((end / start) - 1) * 10000) / 10000;
 	}
 
-	public static Float getFloorPrice(Float target) {
-		return (float) Math.round((target) * 10000) / 10000;
+	public static Float getRound(Float target) {
+		return (float) (Math.round((target) * 100) / 100.0);
 	}
 }
