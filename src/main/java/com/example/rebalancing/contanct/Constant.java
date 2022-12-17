@@ -3,7 +3,7 @@ package com.example.rebalancing.contanct;
 public class Constant {
 	public static final String APPL_PATH = "/Users/choewonjun/Documents/coding/project/rebalancing/src/main/resources/AAPL Historical Data.csv";
 
-	public static final Float SELL_CHANGE_RATIO = 0.05f; // 판매할 시점 비율
+	public static final Float SELL_CHANGE_RATIO = 0.025f; // 판매할 시점 비율
 	public static final Float BUY_CHANGE_RATIO = SELL_CHANGE_RATIO * 2; // 구매할 시점 비율
 	public static final Float SELL_RATIO = 0.1f; // 판매시 주식 매도 비율
 

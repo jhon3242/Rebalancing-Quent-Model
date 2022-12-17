@@ -39,12 +39,12 @@ public class StockRepository {
 	}
 
 	public LocalDate getPastDate(LocalDate nowDate) {
-		int i = -1;
+		int i = 1;
 		while (true) {
 			if (repository.containsKey(nowDate.minusDays(i))) {
 				return nowDate.minusDays(i);
 			}
-			i--;
+			i++;
 		}
 	}
 }

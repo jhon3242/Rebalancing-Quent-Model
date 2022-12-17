@@ -20,7 +20,6 @@ public class ParsingController {
 	}
 
 	private static DateInfo getDateInfo(String line) {
-//		System.out.println("Parsing.getDateInfo");
 		List<String> split = Util.removeColon(line.split(","));
 		return new DateInfo(split);
 	}

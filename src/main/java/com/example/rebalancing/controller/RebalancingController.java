@@ -22,12 +22,13 @@ public class RebalancingController {
 //		LocalDate endDate = Util.StringToLocalDate(inputEndDate());
 //		Float cash = InputView.inputCash();
 
-		LocalDate startDate = LocalDate.of(2022, 10, 28);
+		LocalDate startDate = LocalDate.of(2022, 1, 3);
 		LocalDate endDate = LocalDate.of(2022, 12, 14);
 		Float cash = 10000f;
 
 		rebalancingService.initUser(startDate, cash);
 		UserDto userDtoStart = rebalancingService.getUserDto();
+		OutputView.printUserInfo(userDtoStart);
 		rebalancingService.calculate(startDate, endDate);
 		UserDto userDtoEnd = rebalancingService.getUserDto();
 		OutputView.printTotalResult(userDtoStart, userDtoEnd);

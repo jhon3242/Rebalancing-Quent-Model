@@ -73,6 +73,11 @@ public class User {
 		return result;
 	}
 
+	public boolean isFirstSold(Float change) {
+		int sellIdx = getSellIdxByChange(change);
+		return sellList.get(sellIdx) > 0;
+	}
+
 	private int getSellIdxByChange(Float change) {
 		if (Math.abs(change) < Constant.SELL_CHANGE_RATIO) {
 			return -1;
@@ -88,8 +93,8 @@ public class User {
 		return cash >= price;
 	}
 
-	public boolean canSell() {
-		return amount > 0;
+	public boolean canSell(Float change) {
+		return getAmountByChange(change) > 0;
 	}
 
 	@Override
