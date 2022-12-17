@@ -9,13 +9,14 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 public class RebalancingTest {
+	private static final String TEST_PATH = "/Users/choewonjun/Documents/coding/project/Rebalancing-Quent-Model/src/main/resources/test.csv";
 
 	@Test
 	void rebalancingTest() {
-		String TEST_PATH = "/Users/choewonjun/Documents/coding/project/Rebalancing-Quent-Model/src/main/resources/test.csv";
 		ParsingController parsingController = new ParsingController();
 		RebalancingService rebalancingService = new RebalancingService();
 		parsingController.parsing(TEST_PATH);
+
 		LocalDate startDate = LocalDate.of(2022, 11, 28);
 		LocalDate endDate = LocalDate.of(2022, 12, 14);
 		rebalancingService.initUser(startDate, 10000f);

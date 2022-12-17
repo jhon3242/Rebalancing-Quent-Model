@@ -1,5 +1,6 @@
 package com.example.rebalancing.service;
 
+import com.example.rebalancing.UserDto;
 import com.example.rebalancing.Util;
 import com.example.rebalancing.contanct.Constant;
 import com.example.rebalancing.domain.User;
@@ -20,6 +21,9 @@ public class RebalancingService {
 		STANDARD_PRICE = repository.getPrice(repository.getPastDate(startDate));
 	}
 
+	/**
+	 * 퀀트 매매를 하는 함수
+	 */
 	public void calculate(LocalDate startDate, LocalDate endDate) {
 		LocalDate nowDate = startDate;
 		Float minPrice = STANDARD_PRICE;
@@ -38,7 +42,7 @@ public class RebalancingService {
 				sellStock(nowPrice, user.getAmountByChange((float) (Math.round((buyChange - nowChange) * 100) / 100.0))); // sell
 			}
 			nowDate = repository.getNextDate(nowDate, endDate);
-			System.out.println(nowPrice + " " + user);
+			user.updateEvaluationAmount(nowPrice);
 		}
 	}
 
@@ -54,7 +58,9 @@ public class RebalancingService {
 		user.buyStock(price, amount);
 	}
 
-
+	/**
+	 * 매도 해야하는 시점
+	 */
 	private boolean isSellTime(Float buyChange, Float nowChange) {
 		Float div = (float) (Math.round((buyChange - nowChange) * 100) / 100.0);
 		return Float.compare(div, SELL_CHANGE_RATIO) >= 0;
@@ -64,7 +70,8 @@ public class RebalancingService {
 		user.sellStock(price, amount);
 	}
 
-	public User getUser() {
-		return user;
+	public UserDto getUserDto() {
+		UserDto userDto = new UserDto(user);
+		return userDto;
 	}
 }

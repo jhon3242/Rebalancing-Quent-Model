@@ -25,4 +25,10 @@ public class Constant {
 //	public static final LocalDate START_DATE = LocalDate.of(2014, 1, 15);
 
 	public static final String ERROR_AFTER_END_DATE = "범위 내에 거래날이 없습니다.";
+	public static final String START_USER_MSG = "매매 시작시 정보";
+	public static final String END_USER_MSG = "매매 종료후 정보";
+	public static final String EVALUATION_ASSET_MSG = "추정 자산 : ";
+	public static final String CASH_ASSET_MSG = "보유 현금 : ";
+	public static final String STOCK_AMOUNT_MSG = "보유 주식 수 : ";
+	public static final String TOTAL_PROFIT_MSG = "최종 수악률 : ";
 }

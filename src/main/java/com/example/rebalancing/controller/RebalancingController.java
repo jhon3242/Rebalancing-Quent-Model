@@ -1,10 +1,12 @@
 package com.example.rebalancing.controller;
 
+import com.example.rebalancing.UserDto;
 import com.example.rebalancing.Util;
 import com.example.rebalancing.domain.User;
 import com.example.rebalancing.repository.StockRepository;
 import com.example.rebalancing.service.RebalancingService;
 import com.example.rebalancing.view.InputView;
+import com.example.rebalancing.view.OutputView;
 
 import java.time.LocalDate;
 
@@ -25,7 +27,11 @@ public class RebalancingController {
 		Float cash = 10000f;
 
 		rebalancingService.initUser(startDate, cash);
+		UserDto userDtoStart = rebalancingService.getUserDto();
 		rebalancingService.calculate(startDate, endDate);
+		UserDto userDtoEnd = rebalancingService.getUserDto();
+		OutputView.printTotalResult(userDtoStart, userDtoEnd);
+
 	}
 
 

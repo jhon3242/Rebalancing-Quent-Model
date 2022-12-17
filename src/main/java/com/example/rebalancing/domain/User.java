@@ -8,7 +8,7 @@ import java.util.List;
 
 public class User {
 	private Float purchaseAmount;
-//	private Float evaluationAmount;
+	private Float evaluationAmount;
 	private Float cash;
 	private int amount;
 	private List<Integer> sellList;
@@ -16,6 +16,7 @@ public class User {
 	public User(Float price, Float cash) {
 		this.amount = (int)Math.floor(cash / price);
 		this.purchaseAmount = price * amount;
+		this.evaluationAmount = purchaseAmount;
 		this.cash = cash - purchaseAmount;
 		setSellList();
 	}
@@ -81,11 +82,31 @@ public class User {
 		return (int)(Math.abs(change) / Constant.SELL_CHANGE_RATIO) - 1;
 	}
 
+	public void updateEvaluationAmount(Float price) {
+		this.evaluationAmount = price * amount;
+	}
+
 	@Override
 	public String toString() {
 		return "purchaseAmount=" + purchaseAmount +
 				", cash=" + cash +
 				", amount=" + amount +
 				", sellList=" + sellList;
+	}
+
+	public Float getPurchaseAmount() {
+		return purchaseAmount;
+	}
+
+	public Float getCash() {
+		return cash;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public Float getEvaluationAmount() {
+		return evaluationAmount;
 	}
 }
