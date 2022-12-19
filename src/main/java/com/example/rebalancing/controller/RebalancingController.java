@@ -17,6 +17,7 @@ public class RebalancingController {
 	private static final RebalancingService rebalancingService = new RebalancingService();
 
 	public void run() {
+//		콘솔을 통해 입력시 주석 해제
 //		LocalDate startDate = Util.StringToLocalDate(inputStartDate());
 //		LocalDate endDate = Util.StringToLocalDate(inputEndDate());
 //		Float cash = InputView.inputCash();

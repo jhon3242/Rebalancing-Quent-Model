@@ -3,7 +3,6 @@ package com.example.rebalancing.controller;
 import com.example.rebalancing.view.OutputView;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class InputController {
