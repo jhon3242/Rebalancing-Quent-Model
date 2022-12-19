@@ -74,7 +74,9 @@ public class User {
 	}
 
 	public boolean isFirstSold(Float change) {
+		final int MAX_IDX = 9;
 		int sellIdx = getSellIdxByChange(change);
+		sellIdx = Math.min(sellIdx, MAX_IDX);
 		return sellList.get(sellIdx) > 0;
 	}
 

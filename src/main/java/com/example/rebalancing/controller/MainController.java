@@ -2,10 +2,6 @@ package com.example.rebalancing.controller;
 
 import com.example.rebalancing.contanct.Constant;
 import com.example.rebalancing.repository.StockRepository;
-import com.example.rebalancing.view.OutputView;
-import com.example.rebalancing.view.ReadFileView;
-
-import java.util.List;
 
 public class MainController {
 	private static final StockRepository stockRepository = StockRepository.getInstance();
@@ -13,7 +9,7 @@ public class MainController {
 	private static final RebalancingController rebalancingController = new RebalancingController();
 
 	public void run() {
-		parsingController.parsing(Constant.APPL_PATH);
+		parsingController.parsing(Constant.TSLA_PATH);
 		rebalancingController.run();
 	}
 

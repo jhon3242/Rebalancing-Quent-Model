@@ -14,7 +14,6 @@ import static com.example.rebalancing.view.InputView.inputEndDate;
 import static com.example.rebalancing.view.InputView.inputStartDate;
 
 public class RebalancingController {
-	private static final StockRepository repository = StockRepository.getInstance();
 	private static final RebalancingService rebalancingService = new RebalancingService();
 
 	public void run() {
@@ -22,13 +21,15 @@ public class RebalancingController {
 //		LocalDate endDate = Util.StringToLocalDate(inputEndDate());
 //		Float cash = InputView.inputCash();
 
-		LocalDate startDate = LocalDate.of(2022, 1, 3);
-		LocalDate endDate = LocalDate.of(2022, 12, 14);
-		Float cash = 10000f;
+		LocalDate startDate = LocalDate.of(2021, 1, 4);
+		LocalDate endDate = LocalDate.of(2022, 12, 15);
+		Float cash = 82800f;
 
 		rebalancingService.initUser(startDate, cash);
 		UserDto userDtoStart = rebalancingService.getUserDto();
 		OutputView.printUserInfo(userDtoStart);
+		System.out.println();
+
 		rebalancingService.calculate(startDate, endDate);
 		UserDto userDtoEnd = rebalancingService.getUserDto();
 		OutputView.printTotalResult(userDtoStart, userDtoEnd);

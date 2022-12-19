@@ -2,9 +2,10 @@ package com.example.rebalancing.contanct;
 
 public class Constant {
 	public static final String APPL_PATH = "/Users/choewonjun/Documents/coding/project/rebalancing/src/main/resources/AAPL Historical Data.csv";
+	public static final String TSLA_PATH = "/Users/choewonjun/Documents/coding/project/Rebalancing-Quent-Model/src/main/resources/TSLA Historical Data.csv";
 
-	public static final Float SELL_CHANGE_RATIO = 0.025f; // 판매할 시점 비율
-	public static final Float BUY_CHANGE_RATIO = SELL_CHANGE_RATIO * 2; // 구매할 시점 비율
+	public static final Float SELL_CHANGE_RATIO = 0.05f; // 판매할 시점 비율
+	public static final Float BUY_CHANGE_RATIO = SELL_CHANGE_RATIO * 3; // 구매할 시점 비율
 	public static final Float SELL_RATIO = 0.1f; // 판매시 주식 매도 비율
 
 	//"Date","Price","Open","High","Low","Vol.","Change %"
@@ -15,6 +16,7 @@ public class Constant {
 	public static final int LOW_IDX = 4;
 	public static final int VOL_IDX = 5;
 	public static final int CHANGE_IDX = 6;
+
 
 	public static final String ERROR_PREFIX = "[ERROR] : ";
 	public static final String INPUT_START_DATE_MSG = "시작날을 입력해주세요. (MM/DD/YYYY)" ;

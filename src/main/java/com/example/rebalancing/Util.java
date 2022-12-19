@@ -47,4 +47,8 @@ public class Util {
 	public static Float getRound(Float target) {
 		return (float) (Math.round((target) * 100) / 100.0);
 	}
+
+	public static Float getRateDiv(Float dec, Float src) {
+		return (float) (Math.round((dec - src) * 100) / 100.0);
+	}
 }

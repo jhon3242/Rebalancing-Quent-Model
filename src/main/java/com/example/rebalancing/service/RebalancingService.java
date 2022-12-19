@@ -2,13 +2,13 @@ package com.example.rebalancing.service;
 
 import com.example.rebalancing.UserDto;
 import com.example.rebalancing.Util;
-import com.example.rebalancing.contanct.Constant;
 import com.example.rebalancing.domain.User;
 import com.example.rebalancing.repository.StockRepository;
 import com.example.rebalancing.view.OutputView;
 
 import java.time.LocalDate;
 
+import static com.example.rebalancing.Util.getRateDiv;
 import static com.example.rebalancing.Util.getRound;
 import static com.example.rebalancing.contanct.Constant.BUY_CHANGE_RATIO;
 import static com.example.rebalancing.contanct.Constant.SELL_CHANGE_RATIO;
@@ -33,25 +33,33 @@ public class RebalancingService {
 		while (!nowDate.isEqual(endDate)) {
 			Float nowPrice = repository.getPrice(nowDate);
 			minPrice = Math.min(minPrice, nowPrice);
-			Float nowChange = Util.getChange(STANDARD_PRICE, nowPrice); // 표준가로 부터 현재 가격의 변동%
-			Float minChange = Util.getChange(STANDARD_PRICE, minPrice); // 표준가로 부터 최소 가격의 변동%
-			Float buyChange = Util.getChange(STANDARD_PRICE, buyPrice); // 표준가로 부터 구매 가격의 변동%
-			if (isBuyTime(minChange, nowChange) && user.canBuy(nowPrice)) {
-				System.out.println(nowDate +"\n매수 : " + nowPrice); // TODO 지울것
+			Float rateFromNow = Util.getChange(STANDARD_PRICE, nowPrice); // 표준가로 부터 현재 가격의 변동%
+			Float rateFromMin = Util.getChange(STANDARD_PRICE, minPrice); // 표준가로 부터 최소 가격의 변동%
+			Float rateFromBuy = Util.getChange(STANDARD_PRICE, buyPrice); // 표준가로 부터 구매 가격의 변동%
+//			System.out.println("현재 가격 : " + nowPrice + " 현재가격 변화량 : " + rateFromNow);
+//			System.out.println("최소 가격 : " + minPrice + " 최소가격 변화량 : " + rateFromMin);
+//			System.out.println("이전구매 가격 : " + buyPrice + " 이전구매가격 변화량 : " + rateFromBuy);
+//			System.out.println();
+
+			if (isBuyTime(rateFromMin, rateFromNow) && user.canBuy(nowPrice)) {
+				System.out.println(nowDate +"\n매수 : " + nowPrice + "\n");
 				buyStock(nowPrice, user.getMaximumAmount(nowPrice)); // buy
 				minPrice = nowPrice;
 				buyPrice = nowPrice;
+				STANDARD_PRICE = nowPrice;
 
 				OutputView.printUserInfo(new UserDto(user));
 				System.out.println();
-			} else if (isSellTime(buyChange, nowChange, minChange) && user.isFirstSold(getRound(buyChange - nowChange))) {
-				System.out.println(nowDate +"\n매도 : " + nowPrice); // TODO 지울것
-				Float div = (float) (Math.round((buyChange - nowChange) * 100) / 100.0);
-				sellStock(nowPrice, user.getAmountByChange(getRound(buyChange - nowChange))); // sell
+
+			} else if (isSellTime(rateFromBuy, rateFromNow, rateFromMin) && user.isFirstSold(getRound(rateFromBuy - rateFromNow))) {
+				System.out.println(nowDate +"\n매도 : " + nowPrice + "\n");
+				Float div = (float) (Math.round((rateFromBuy - rateFromNow) * 100) / 100.0);
+				sellStock(nowPrice, user.getAmountByChange(getRound(rateFromBuy - rateFromNow))); // sell
 
 				OutputView.printUserInfo(new UserDto(user));
 				System.out.println();
 			}
+
 			nowDate = repository.getNextDate(nowDate, endDate);
 			user.updateEvaluationAmount(nowPrice);
 
@@ -61,9 +69,8 @@ public class RebalancingService {
 	/**
 	 * 매수 해야하는 시점
 	 */
-	private boolean isBuyTime(Float minChange, Float nowChange) {
-		Float div = (float) (Math.round((nowChange - minChange) * 100) / 100.0);
-		return Float.compare(div, BUY_CHANGE_RATIO) >= 0;
+	private boolean isBuyTime(Float rateFromMin, Float rateFromNow) {
+		return rateFromMin < rateFromNow && getRateDiv(rateFromNow, rateFromMin) >= BUY_CHANGE_RATIO;
 	}
 
 	public void buyStock(Float price, int amount) {
@@ -73,9 +80,8 @@ public class RebalancingService {
 	/**
 	 * 매도 해야하는 시점
 	 */
-	private boolean isSellTime(Float buyChange, Float nowChange, Float minChange) {
-		Float div = (float) (Math.round((buyChange - nowChange) * 100) / 100.0);
-		return Float.compare(div, SELL_CHANGE_RATIO) >= 0 && minChange >= nowChange;
+	private boolean isSellTime(Float rateFromBuy, Float rateFromNow, Float rateFromMin) {
+		return  rateFromMin >= rateFromNow && getRateDiv(rateFromBuy, rateFromNow) >= SELL_CHANGE_RATIO;
 	}
 
 	public void sellStock(Float price, int amount) {
